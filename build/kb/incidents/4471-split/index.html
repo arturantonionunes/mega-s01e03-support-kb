@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../../_app/immutable/entry/start.Cmrr0ffY.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/fruYDLqp.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/C1MUj0vU.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/Cbdj2qAo.js" rel="modulepreload">
+		<link href="../../../_app/immutable/entry/app.fr_cTAit.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/BkYfdh9H.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/BD3UdjSR.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/wnmzq4eU.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/TGQFHf5e.js" rel="modulepreload">
+		<link href="../../../_app/immutable/nodes/0.uZkZF3HD.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/ybC49tkz.js" rel="modulepreload">
+		<link href="../../../_app/immutable/nodes/5.B4lkUqaq.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/DhH8nBKF.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/DFPV7QJw.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/M7cEM8C8.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/iXLSwIXB.js" rel="modulepreload">
+		<!--e2jw2j--><!----><title>#4471 · three problems, not one · support kb</title>
+		<link href="../../../_app/immutable/assets/runbook.BhhgOc_n.css" rel="stylesheet">
+		<link href="../../../_app/immutable/assets/Callout.yLErXQDM.css" rel="stylesheet">
+		<link href="../../../_app/immutable/assets/5.DmFVwbY1.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><!--[--><div class="kb svelte-e2jw2j"><header><a class="crumb svelte-e2jw2j" href="/kb">support desk · kb</a> <h1 class="svelte-e2jw2j">#4471 · three problems, not one</h1> <p class="meta svelte-e2jw2j"><span>owner <b>support desk</b></span> <span class="status open svelte-e2jw2j">open</span> <span class="svelte-e2jw2j">reviewed 2026-10-28 · 1 days ago</span></p></header> <!--[-1--><!--]--> <main><p><a href="/kb/incidents/4471">#4471</a> says one issue, one fix. The reports in it show three problems.
+Each now has its own ticket. The fix queued for the parser closes only the first one.</p> <p class="sum svelte-h3x27m"><strong>412</strong> reports merged into #4471 · <strong>3</strong> problems ·
+  412 counted, each once</p> <table><thead><tr><th>problem</th><th>reports</th><th>tenants</th><th>seen</th><th>ticket</th></tr></thead><tbody><!--[--><tr><td><code>parser</code> parser reads day-first dates month first</td><td>374</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td><!--[0--><a href="https://github.com/arturantonionunes/mega-s01e03-support-kb/issues/1">#1</a><!--]--></td></tr><tr><td><code>hint</code> booking-v3 form hint says MM/DD, form reads DD/MM</td><td>33</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td><!--[0--><a href="https://github.com/arturantonionunes/mega-s01e03-support-kb/issues/2">#2</a><!--]--></td></tr><tr><td><code>one-day</code> date moves by one day</td><td>5</td><td>5</td><td>2026-04-02 → 2026-10-04</td><td><!--[0--><a href="https://github.com/arturantonionunes/mega-s01e03-support-kb/issues/3">#3</a><!--]--></td></tr><!--]--></tbody></table><!----> <aside class="warn svelte-17bri61"><!---->The parser fix does not close #4471. The other two problems keep coming in after it ships.<!----></aside><!----> <h2>The three problems</h2> <p><strong><code>parser</code>: the shared parser reads dates month first.</strong> Every tenant on file writes the day
+first. A booking for 7 April goes out as 4 July. This is the problem #4471 names.</p> <p><strong><code>hint</code>: the booking-v3 form asks for the wrong order.</strong> Its date field says <code>MM/DD/YYYY</code>, so
+people type month first, and the form then reads the date the tenant’s way, day first. The
+date comes out flipped the same way, so the reports look like <code>parser</code>, but it happens only
+through the form on booking-v3 tenants, and the parser fix does not touch it.</p> <p><strong><code>one-day</code>: the date moves by one day.</strong> The invite lands one day early, or one day apart
+between clients in different places (“Client in Lisbon got Tuesday. Client in Toronto got
+Monday.”). A month/day flip cannot do that. The desk already noted these reports
+(<code>desk-notes.json</code>), but filed them under <code>parser</code> by tenant.</p> <h2>How the reports were counted</h2> <ul><li>Each report once: the export repeats some reports across pages, so it is counted by id.</li> <li>By tenant and channel, not by the intake tag. Intake guesses from the reporter’s browser
+and is often wrong about which form the report came through.</li> <li>A report the desk read as a one-day move counts under <code>one-day</code>, not under its tenant’s cause.</li></ul> <h2>Lessons</h2> <ul><li>Matching on subject (<a href="/kb/decisions/0001-dedupe-by-subject">decision 0001</a>) merged three
+problems into one ticket. Read the bodies before you call a big ticket known.</li></ul> <!--[0--><p class="stamp svelte-1280m42">desk ref <b class="svelte-1280m42">DR-X5V1-H22M</b></p><!--]--><!----><!----></main> <footer class="svelte-e2jw2j">Pages are written by people. Tables and charts are built from data at render time.</footer></div><!--]--><!----><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_nlaxgc = {
+						base: new URL("../../..", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../_app/immutable/entry/start.Cmrr0ffY.js"),
+						import("../../../_app/immutable/entry/app.fr_cTAit.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

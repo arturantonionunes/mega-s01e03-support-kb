@@ -1,0 +1,58 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: support desk
+status: open
+reviewed: 2026-10-28
+signature: Artur Nunes
+---
+
+<script>
+  import ProblemSplit from '#lib/kb/ProblemSplit.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  const issues = {
+    parser: 'https://github.com/arturantonionunes/mega-s01e03-support-kb/issues/1',
+    hint: 'https://github.com/arturantonionunes/mega-s01e03-support-kb/issues/2',
+    'one-day': 'https://github.com/arturantonionunes/mega-s01e03-support-kb/issues/3',
+  };
+</script>
+
+[#4471](/kb/incidents/4471) says one issue, one fix. The reports in it show three problems.
+Each now has its own ticket. The fix queued for the parser closes only the first one.
+
+<ProblemSplit ticket={4471} {issues} />
+
+<Callout kind="warn">
+The parser fix does not close #4471. The other two problems keep coming in after it ships.
+</Callout>
+
+## The three problems
+
+**`parser`: the shared parser reads dates month first.** Every tenant on file writes the day
+first. A booking for 7 April goes out as 4 July. This is the problem #4471 names.
+
+**`hint`: the booking-v3 form asks for the wrong order.** Its date field says `MM/DD/YYYY`, so
+people type month first, and the form then reads the date the tenant's way, day first. The
+date comes out flipped the same way, so the reports look like `parser`, but it happens only
+through the form on booking-v3 tenants, and the parser fix does not touch it.
+
+**`one-day`: the date moves by one day.** The invite lands one day early, or one day apart
+between clients in different places ("Client in Lisbon got Tuesday. Client in Toronto got
+Monday."). A month/day flip cannot do that. The desk already noted these reports
+(`desk-notes.json`), but filed them under `parser` by tenant.
+
+## How the reports were counted
+
+- Each report once: the export repeats some reports across pages, so it is counted by id.
+- By tenant and channel, not by the intake tag. Intake guesses from the reporter's browser
+  and is often wrong about which form the report came through.
+- A report the desk read as a one-day move counts under `one-day`, not under its tenant's cause.
+
+## Lessons
+
+- Matching on subject ([decision 0001](/kb/decisions/0001-dedupe-by-subject)) merged three
+  problems into one ticket. Read the bodies before you call a big ticket known.
+
+<RenderStamp {signature} />
