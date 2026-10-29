@@ -17,31 +17,39 @@ signature: Artur Nunes
     hint: 'https://github.com/arturantonionunes/mega-s01e03-support-kb/issues/2',
     'one-day': 'https://github.com/arturantonionunes/mega-s01e03-support-kb/issues/3',
   };
+  // From engineering's update on #4471, closed 5 October.
+  const status = {
+    parser: 'fixed',
+    hint: "won't fix",
+  };
 </script>
 
-[#4471](/kb/incidents/4471) says one issue, one fix. The reports in it show three problems.
-Each now has its own ticket. The fix queued for the parser closes only the first one.
+[#4471](/kb/incidents/4471) said one issue, one fix. The reports in it show three problems, and
+each has its own ticket. Engineering closed #4471 on 5 October: the parser is fixed and the
+booking-v3 form is retired. That ends two of the three problems. The third is still open.
 
-<ProblemSplit ticket={4471} {issues} />
+<ProblemSplit ticket={4471} {issues} {status} />
 
 <Callout kind="warn">
-The parser fix does not close #4471. The other two problems keep coming in after it ships.
+#4471 is closed, but the one-day problem is not. Neither the parser fix nor retiring the form
+touches it. Keep its reports on its own ticket.
 </Callout>
 
 ## The three problems
 
-**`parser`: the shared parser reads dates month first.** Every tenant on file writes the day
-first. A booking for 7 April goes out as 4 July. This is the problem #4471 names.
+**`parser`: the shared parser read dates month first.** Every tenant on file writes the day
+first. A booking for 7 April went out as 4 July. Fixed: `fix(dates): parse dd/mm for eu locales`.
 
-**`hint`: the booking-v3 form asks for the wrong order.** Its date field says `MM/DD/YYYY`, so
-people type month first, and the form then reads the date the tenant's way, day first. The
-date comes out flipped the same way, so the reports look like `parser`, but it happens only
-through the form on booking-v3 tenants, and the parser fix does not touch it.
+**`hint`: the booking-v3 form asked for the wrong order.** Its date field said `MM/DD/YYYY`, so
+people typed month first, and the form then read the date the tenant's way, day first. The date
+came out flipped the same way, so the reports looked like `parser`, but they came only through
+the form on booking-v3 tenants. Won't fix: the booking-v3 form is retired, so no new reports can
+come this way.
 
 **`one-day`: the date moves by one day.** The invite lands one day early, or one day apart
 between clients in different places ("Client in Lisbon got Tuesday. Client in Toronto got
-Monday."). A month/day flip cannot do that. The desk already noted these reports
-(`desk-notes.json`), but filed them under `parser` by tenant.
+Monday."). A month/day flip cannot do that, so the parser fix does not end it. The desk had noted
+these reports (`desk-notes.json`) but filed them under `parser` by tenant. Open.
 
 ## How the reports were counted
 
@@ -55,5 +63,6 @@ Monday."). A month/day flip cannot do that. The desk already noted these reports
 
 - Matching on subject ([decision 0001](/kb/decisions/0001-dedupe-by-subject)) merged three
   problems into one ticket. Read the bodies before you call a big ticket known.
+- Closing a merged ticket closes only the problems its fix touches. Check each one.
 
 <RenderStamp {signature} />

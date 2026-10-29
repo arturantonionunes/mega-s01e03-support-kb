@@ -7,7 +7,11 @@
   // One row per problem in the ticket, counted the desk's way: every report under its tenant's cause.
   // Reports the desk read as a one-day move (desk-notes.json) are their own problem too, so they
   // also get a row of their own: a month/day flip cannot move a date by one day.
-  let { ticket, issues = {} }: { ticket: number; issues?: Record<string, string> } = $props();
+  let {
+    ticket,
+    issues = {},
+    status = {},
+  }: { ticket: number; issues?: Record<string, string>; status?: Record<string, string> } = $props();
 
   const LABEL: Record<string, string> = {
     parser: 'parser reads day-first dates month first',
@@ -40,7 +44,7 @@
 
 <table>
   <thead>
-    <tr><th>problem</th><th>reports</th><th>tenants</th><th>seen</th><th>ticket</th></tr>
+    <tr><th>problem</th><th>reports</th><th>tenants</th><th>seen</th><th>ticket</th><th>status</th></tr>
   </thead>
   <tbody>
     {#each rows as r (r.key)}
@@ -50,6 +54,7 @@
         <td>{r.tenants}</td>
         <td>{r.firstSeen} → {r.lastSeen}</td>
         <td>{#if issues[r.key]}<a href={issues[r.key]}>{issues[r.key].replace(/^.*\/issues\//, '#')}</a>{:else}—{/if}</td>
+        <td class:open={(status[r.key] ?? 'open') === 'open'}>{status[r.key] ?? 'open'}</td>
       </tr>
     {/each}
   </tbody>
@@ -62,4 +67,5 @@
 <style>
   .sum { font-size: 1.1rem; }
   .note { color: var(--muted); font-size: 0.85em; }
+  .open { color: var(--warn); font-weight: 600; }
 </style>
