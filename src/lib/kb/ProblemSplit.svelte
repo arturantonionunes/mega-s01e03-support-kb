@@ -4,8 +4,9 @@
   import { groupByCause, uniqueById, type Report } from '#lib/kb/causes';
   import { tenantOf } from '#lib/kb/locales';
 
-  // One row per problem in the ticket. A report the desk read as a one-day move (desk-notes.json)
-  // is its own problem: a month/day flip cannot move a date by one day.
+  // One row per problem in the ticket, counted the desk's way: every report under its tenant's cause.
+  // Reports the desk read as a one-day move (desk-notes.json) are their own problem too, so they
+  // also get a row of their own: a month/day flip cannot move a date by one day.
   let { ticket, issues = {} }: { ticket: number; issues?: Record<string, string> } = $props();
 
   const LABEL: Record<string, string> = {
@@ -18,8 +19,7 @@
   const merged = $derived(uniqueById(reports as Report[]).filter((r) => r.mergedInto === ticket));
   const rows = $derived.by(() => {
     const moved = merged.filter((r) => notes.oneDayMove.includes(r.id));
-    const rest = merged.filter((r) => !notes.oneDayMove.includes(r.id));
-    const groups = groupByCause(rest, tenantOf).map((g) => ({ key: g.cause as string, reports: g.reports }));
+    const groups = groupByCause(merged, tenantOf).map((g) => ({ key: g.cause as string, reports: g.reports }));
     if (moved.length) groups.push({ key: 'one-day', reports: moved });
     return groups.map((g) => {
       const days = g.reports.map((r) => r.receivedAt.slice(0, 10)).sort();
@@ -31,12 +31,11 @@
       };
     });
   });
-  const total = $derived(rows.reduce((n, r) => n + r.reports.length, 0));
+  const moved = $derived(rows.find((r) => r.key === 'one-day'));
 </script>
 
 <p class="sum">
-  <strong>{merged.length}</strong> reports merged into #{ticket} · <strong>{rows.length}</strong> problems ·
-  {total} counted, each once
+  <strong>{merged.length}</strong> reports merged into #{ticket} · <strong>{rows.length}</strong> problems
 </p>
 
 <table>
@@ -56,6 +55,11 @@
   </tbody>
 </table>
 
+{#if moved}
+  <p class="note">The {moved.reports.length} <code>one-day</code> reports are also counted under their tenant's cause, where the desk filed them.</p>
+{/if}
+
 <style>
   .sum { font-size: 1.1rem; }
+  .note { color: var(--muted); font-size: 0.85em; }
 </style>
