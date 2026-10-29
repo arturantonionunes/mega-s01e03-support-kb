@@ -4,7 +4,7 @@ title: '#4471 · three problems, not one'
 owner: support desk
 status: open
 reviewed: 2026-10-28
-signature: Artur Nunes
+signature: v1.eyJzdWIiOiI0MzkzIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMyMzk0MTMsImV4cCI6MTc5MzMyNTgxM30.H9BAvce3UCwyt7PJW4u0Zq5fsty44aaqtI9RWILZA4o
 ---
 
 <script>
@@ -23,6 +23,8 @@ signature: Artur Nunes
     hint: "won't fix",
   };
 </script>
+
+Written by Artur Nunes.
 
 [#4471](/kb/incidents/4471) said one issue, one fix. The reports in it show three problems, and
 each has its own ticket. Engineering closed #4471 on 5 October: the parser is fixed and the
